@@ -115,21 +115,6 @@ form button:hover {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 body {
     font-family: Arial, sans-serif;
     margin: 20px;
@@ -265,10 +250,3 @@ tr:nth-child(even) {
 .actions {
     white-space: nowrap;
 }
-
-
-
-
-
-
-
