@@ -1,26 +1,3 @@
-/*const BASE_URL="https://studentapi-m7a7.onrender.com";
-let studentsdata=document.querySelector(".studentsdata")
-
-const getStudentData=async ()=>{
-    const URL=`${BASE_URL}/${"student"}/${"all"}`;
-    let response=await fetch(URL);
-    let data=await response.json();
-    console.log(data);
-    //studentsdata.innerText=data;
-}
-
-getStudentData();
-
-const addStudent=async ()=>{
-    const URL=`${BASE_URL}/${"student"}/${"add"}`;
-    const requestOptions={
-       
-    }
-    let response=await fetch(URL);
-    let data=await response.json();
-    console.log(data);
-}*/
-
 const API_BASE = 'https://studentapi-m7a7.onrender.com';
 let students = [];
 let editingStudentId = null;
@@ -34,10 +11,9 @@ const yearMap = {
 
 document.addEventListener('DOMContentLoaded', loadStudents);
 document.getElementById('student-form').addEventListener('submit', onFormSubmit);
-document.getElementById('cancel-btn').addEventListener('click', cancelEdit);
+//document.getElementById('cancel-btn').addEventListener('click', cancelEdit);
 
 async function loadStudents() {
-    toggleLoading(true);
     clearStudents();
 
     try {
@@ -50,13 +26,7 @@ async function loadStudents() {
         displayStudents();
     } catch (e) {
         showMessage('Error loading students: ' + e.message, 'error');
-    } finally {
-        toggleLoading(false);
-    }
-}
-
-function toggleLoading(show) {
-    document.getElementById('loading').style.display = show ? 'block' : 'none';
+    } 
 }
 
 function clearStudents() {
@@ -209,7 +179,7 @@ async function updateStudent() {
         if (!res.ok) throw new Error(data.message || 'Failed to update student');
 
         showMessage('Student updated successfully!', 'success');
-        cancelEdit();
+        //cancelEdit();
         loadStudents();
     } catch (e) {
         showMessage(`Error updating student: ${e.message}`, 'error');
@@ -231,11 +201,11 @@ async function deleteStudent(id) {
     }
 }
 
-function cancelEdit() {
+/*function cancelEdit() {
     editingStudentId = null;
     resetForm();
     setFormMode(false);
-}
+}*/
 
 function resetForm() {
     document.getElementById('student-form').reset();
