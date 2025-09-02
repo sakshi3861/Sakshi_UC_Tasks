@@ -14,8 +14,6 @@ document.getElementById('student-form').addEventListener('submit', onFormSubmit)
 //document.getElementById('cancel-btn').addEventListener('click', cancelEdit);
 
 async function loadStudents() {
-    clearStudents();
-
     try {
         const res = await fetch(`${API_BASE}/student/all`);
         const data = await res.json();
@@ -29,9 +27,9 @@ async function loadStudents() {
     } 
 }
 
-function clearStudents() {
+/*function clearStudents() {
     document.getElementById('students-container').innerHTML = '';
-}
+}*/
 
 function displayStudents() {
     const container = document.getElementById('students-container');
@@ -57,8 +55,8 @@ function displayStudents() {
                 <td class="actions">
                     ${
                       canModify
-                        ? `<button class="btn-edit" onclick="editStudent('${student._id}')">✏️ Edit</button>
-                           <button class="btn-delete" onclick="deleteStudent('${student._id}')">❌ Delete</button>`
+                        ? `<button class="btn-edit" onclick="editStudent('${student._id}')">Edit</button>
+                           <button class="btn-delete" onclick="deleteStudent('${student._id}')">Delete</button>`
                         : '<span style="color: #666;">Default</span>'
                     }
                 </td>
