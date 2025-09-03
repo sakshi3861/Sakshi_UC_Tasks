@@ -24,28 +24,28 @@ function displayStudents() {
     const container = document.getElementById('students-container');
 
     const rows = students.map(student => {
-        const canModify = !student.isDefault; 
+    let actions = '';
+    if (!student.isDefault) {
+        actions = `<button class="btn-edit" onclick="editStudent('${student._id}')">Edit</button>
+                   <button  class="btn-delete" onclick="deleteStudent('${student._id}')">Delete</button>`;
+    } else {
+        actions = '<span style="color: #666;">Default</span>';
+    }
 
-        return `
-            <tr>
-                <td>${student.studentName}</td>
-                <td>${student.college}</td>
-                <td>${student.cgpa}</td>
-                <td>${student.phone}</td>
-                <td>${student.sapid}</td>
-                <td>${student.batch}</td>
-                <td>${student.year}</td>
-                <td>${student.address}</td>
-                <td class="actions">
-                    ${
-                      canModify
-                        ? `<button class="btn-edit" onclick="editStudent('${student._id}')">Edit</button>
-                           <button class="btn-delete" onclick="deleteStudent('${student._id}')">Delete</button>`
-                        : '<span style="color: #666;">Default</span>'
-                    }
-                </td>
-            </tr>`;
-    }).join('');
+    return `
+        <tr>
+            <td>${student.studentName}</td>
+            <td>${student.college}</td>
+            <td>${student.cgpa}</td>
+            <td>${student.phone}</td>
+            <td>${student.sapid}</td>
+            <td>${student.batch}</td>
+            <td>${student.year}</td>
+            <td>${student.address}</td>
+            <td>${actions}</td>
+        </tr>
+    `;
+}).join('');
 
     container.innerHTML = `
         <table>
