@@ -9,7 +9,6 @@ const yearMap = {
     4: "Fourth Year"
 };
 
-document.addEventListener('DOMContentLoaded', loadStudents);
 document.getElementById('student-form').addEventListener('submit', onFormSubmit);
 
 async function loadStudents() {
@@ -25,6 +24,8 @@ async function loadStudents() {
         showMessage('Error loading students: ' + e.message, 'error');
     } 
 }
+
+loadStudents();
 
 function displayStudents() {
     const container = document.getElementById('students-container');
