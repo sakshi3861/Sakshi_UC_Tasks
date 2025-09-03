@@ -66,7 +66,6 @@ function onFormSubmit(event) {
 }
 
 function getFormData() {
-    let yearValue = document.getElementById('year').value;
     return {
         studentName: document.getElementById('studentName').value,
         college: document.getElementById('college').value,
@@ -165,12 +164,13 @@ function resetForm() {
 }
 
 function setFormMode(isEditing) {
-    document.getElementById('form-title').textContent = isEditing ? 'Edit Student' : 'Add New Student';
-    document.getElementById('submit-btn').textContent = isEditing ? 'Update Student' : 'Add Student';
-    document.getElementById('cancel-btn').style.display = isEditing ? 'inline-block' : 'none';
-
     if (isEditing) {
+        document.getElementById('form-title').textContent = 'Edit Student';
+        document.getElementById('submit-btn').textContent = 'Update Student';
         document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+    } else {
+        document.getElementById('form-title').textContent = 'Add New Student';
+        document.getElementById('submit-btn').textContent = 'Add Student';
     }
 }
 
