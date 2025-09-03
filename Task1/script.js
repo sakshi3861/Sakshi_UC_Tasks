@@ -174,8 +174,10 @@ function setFormMode(isEditing) {
     }
 }
 
-function showMessage(message, type) {
+function showMessage(message) {
     const msgDiv = document.getElementById('message');
-    msgDiv.innerHTML = `<div class="${type}">${message}</div>`;
-    setTimeout(() => { msgDiv.innerHTML = ''; }, 5000);
+    msgDiv.textContent = message;
+    setTimeout(function() {
+        msgDiv.textContent = '';
+    }, 5000);
 }
