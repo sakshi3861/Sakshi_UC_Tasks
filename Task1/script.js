@@ -29,24 +29,20 @@ loadStudents();
 
 function displayStudents() {
     const container = document.getElementById('students-container');
-    if (!students.length) {
-        container.innerHTML = '<p>No students found.</p>';
-        return;
-    }
 
     const rows = students.map(student => {
         const canModify = !student.isDefault; 
 
         return `
             <tr>
-                <td>${student.studentName || ''}</td>
-                <td>${student.college || ''}</td>
-                <td>${student.cgpa || ''}</td>
-                <td>${student.phone || ''}</td>
-                <td>${student.sapid || ''}</td>
-                <td>${student.batch || ''}</td>
-                <td>${student.year || ''}</td>
-                <td>${student.address || ''}</td>
+                <td>${student.studentName}</td>
+                <td>${student.college}</td>
+                <td>${student.cgpa}</td>
+                <td>${student.phone}</td>
+                <td>${student.sapid}</td>
+                <td>${student.batch}</td>
+                <td>${student.year}</td>
+                <td>${student.address}</td>
                 <td class="actions">
                     ${
                       canModify
@@ -85,7 +81,7 @@ function getFormData() {
         phone: document.getElementById('phone').value,
         sapid: document.getElementById('sapid').value,
         batch: document.getElementById('batch').value,
-        year: yearMap[yearValue] || '',
+        year: yearMap[yearValue],
         address: document.getElementById('address').value,
     };
 }
@@ -105,7 +101,7 @@ async function addStudent() {
         });
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to add student');
+        if (!res.ok) throw new Error(data.message);
 
         showMessage('Student added successfully!', 'success');
         resetForm();
@@ -121,12 +117,12 @@ function editStudent(id) {
 
     editingStudentId = id;
 
-    document.getElementById('studentName').value = student.studentName || '';
-    document.getElementById('college').value = student.college || '';
-    document.getElementById('cgpa').value = student.cgpa || '';
-    document.getElementById('phone').value = student.phone || '';
-    document.getElementById('sapid').value = student.sapid || '';
-    document.getElementById('batch').value = student.batch || '';
+    document.getElementById('studentName').value = student.studentName;
+    document.getElementById('college').value = student.college;
+    document.getElementById('cgpa').value = student.cgpa;
+    document.getElementById('phone').value = student.phone;
+    document.getElementById('sapid').value = student.sapid;
+    document.getElementById('batch').value = student.batch;
 
     const yearReverseMap = {
         "First Year": "1",
@@ -134,10 +130,8 @@ function editStudent(id) {
         "Third Year": "3",
         "Fourth Year": "4"
     };
-    document.getElementById('year').value = yearReverseMap[student.year] || '';
-
-    document.getElementById('address').value = student.address || '';
-
+    document.getElementById('year').value = yearReverseMap[student.year];
+    document.getElementById('address').value = student.address;
     setFormMode(true);
 }
 
@@ -156,7 +150,7 @@ async function updateStudent() {
         });
 
         const data = await res.json();
-        if (!res.ok) throw new Error(data.message || 'Failed to update student');
+        if (!res.ok) throw new Error(data.message);
 
         showMessage('Student updated successfully!', 'success');
         loadStudents();
