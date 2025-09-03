@@ -9,9 +9,9 @@ async function loadStudents() {
         const res = await fetch(`${API_BASE}/student/all`);
         const data = await res.json();
 
-        if (!res.ok) throw new Error(data.message || 'Failed to load students');
+        if (!res.ok) throw new Error(data.message);
 
-        students = data.students || [];
+        students = data.students;
         displayStudents();
     } catch (e) {
         showMessage('Error loading students: ' + e.message, 'error');
@@ -81,10 +81,12 @@ function getFormData() {
 async function addStudent() {
     const newStudent = getFormData();
 
-    if (students.some(s => s.sapid === newStudent.sapid)) {
-        return showMessage('SAP ID already exists. Please use a unique SAP ID.', 'error');
+    for (let i = 0; i < students.length; i++) {
+    if (students[i].sapid === newStudent.sapid) {
+        showMessage('SAP ID already exists. Please use a unique SAP ID.');
+        return;
     }
-
+}
     try {
         const res = await fetch(`${API_BASE}/student/add`, {
             method: 'POST',
