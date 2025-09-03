@@ -11,7 +11,6 @@ const yearMap = {
 
 document.addEventListener('DOMContentLoaded', loadStudents);
 document.getElementById('student-form').addEventListener('submit', onFormSubmit);
-//document.getElementById('cancel-btn').addEventListener('click', cancelEdit);
 
 async function loadStudents() {
     try {
@@ -27,10 +26,6 @@ async function loadStudents() {
     } 
 }
 
-/*function clearStudents() {
-    document.getElementById('students-container').innerHTML = '';
-}*/
-
 function displayStudents() {
     const container = document.getElementById('students-container');
     if (!students.length) {
@@ -39,7 +34,6 @@ function displayStudents() {
     }
 
     const rows = students.map(student => {
-        // Only allow modifying students that are not default
         const canModify = !student.isDefault; 
 
         return `
@@ -84,26 +78,20 @@ function onFormSubmit(event) {
 function getFormData() {
     let yearValue = document.getElementById('year').value;
     return {
-        studentName: document.getElementById('studentName').value.trim(),
-        college: document.getElementById('college').value.trim(),
+        studentName: document.getElementById('studentName').value,
+        college: document.getElementById('college').value,
         cgpa: parseFloat(document.getElementById('cgpa').value),
-        phone: document.getElementById('phone').value.trim(),
-        sapid: document.getElementById('sapid').value.trim(),
-        batch: document.getElementById('batch').value.trim(),
+        phone: document.getElementById('phone').value,
+        sapid: document.getElementById('sapid').value,
+        batch: document.getElementById('batch').value,
         year: yearMap[yearValue] || '',
-        address: document.getElementById('address').value.trim(),
+        address: document.getElementById('address').value,
     };
 }
 
 async function addStudent() {
     const newStudent = getFormData();
 
-    // Check for empty fields explicitly
-    if (Object.values(newStudent).some(value => value === '' || value === null || (typeof value === 'number' && isNaN(value)))) {
-        return showMessage('Please fill in all fields correctly.', 'error');
-    }
-
-    // Check for duplicate sapid
     if (students.some(s => s.sapid === newStudent.sapid)) {
         return showMessage('SAP ID already exists. Please use a unique SAP ID.', 'error');
     }
@@ -139,7 +127,6 @@ function editStudent(id) {
     document.getElementById('sapid').value = student.sapid || '';
     document.getElementById('batch').value = student.batch || '';
 
-    // Map year string back to select option (reverse map)
     const yearReverseMap = {
         "First Year": "1",
         "Second Year": "2",
@@ -156,12 +143,6 @@ function editStudent(id) {
 async function updateStudent() {
     const updated = getFormData();
 
-    // Check for empty or invalid fields
-    if (Object.values(updated).some(value => value === '' || value === null || (typeof value === 'number' && isNaN(value)))) {
-        return showMessage('Please fill in all fields correctly.', 'error');
-    }
-
-    // Check for duplicate sapid except current editing student
     if (students.some(s => s.sapid === updated.sapid && s._id !== editingStudentId)) {
         return showMessage('SAP ID already exists. Please use a unique SAP ID.', 'error');
     }
@@ -177,7 +158,6 @@ async function updateStudent() {
         if (!res.ok) throw new Error(data.message || 'Failed to update student');
 
         showMessage('Student updated successfully!', 'success');
-        //cancelEdit();
         loadStudents();
     } catch (e) {
         showMessage(`Error updating student: ${e.message}`, 'error');
@@ -198,12 +178,6 @@ async function deleteStudent(id) {
         showMessage(`Error deleting student: ${e.message}`, 'error');
     }
 }
-
-/*function cancelEdit() {
-    editingStudentId = null;
-    resetForm();
-    setFormMode(false);
-}*/
 
 function resetForm() {
     document.getElementById('student-form').reset();
