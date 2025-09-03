@@ -2,13 +2,6 @@ const API_BASE = 'https://studentapi-m7a7.onrender.com';
 let students = [];
 let editingStudentId = null;
 
-const yearMap = {
-    1: "First Year",
-    2: "Second Year",
-    3: "Third Year",
-    4: "Fourth Year"
-};
-
 document.getElementById('student-form').addEventListener('submit', onFormSubmit);
 
 async function loadStudents() {
@@ -77,12 +70,12 @@ function getFormData() {
     return {
         studentName: document.getElementById('studentName').value,
         college: document.getElementById('college').value,
-        cgpa: parseFloat(document.getElementById('cgpa').value),
+        cgpa: parseFloat(document.getElementById('cgpa').value), 
         phone: document.getElementById('phone').value,
         sapid: document.getElementById('sapid').value,
         batch: document.getElementById('batch').value,
-        year: yearMap[yearValue],
-        address: document.getElementById('address').value,
+        year: document.getElementById('year').value, 
+        address: document.getElementById('address').value
     };
 }
 
@@ -123,14 +116,7 @@ function editStudent(id) {
     document.getElementById('phone').value = student.phone;
     document.getElementById('sapid').value = student.sapid;
     document.getElementById('batch').value = student.batch;
-
-    const yearReverseMap = {
-        "First Year": "1",
-        "Second Year": "2",
-        "Third Year": "3",
-        "Fourth Year": "4"
-    };
-    document.getElementById('year').value = yearReverseMap[student.year];
+    document.getElementById('year').value = student.year;
     document.getElementById('address').value = student.address;
     setFormMode(true);
 }
