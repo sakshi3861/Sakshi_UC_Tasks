@@ -1,0 +1,155 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  background:linear-gradient(to right,#615756,#503D3F);
+}
+
+.input{
+  width: 75%;
+  padding: 0.5rem;
+  border: 1px solid #d1d5db; 
+  border-radius: 0.5rem;
+  margin: 10px;
+  margin-left: 12.5%;
+  outline: none;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.input-valid{
+  border-color: #10b981; 
+}
+
+.input-error{
+  border-color: #ef4444; 
+}
+
+.form{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;   
+  height: 50vh;
+  margin-left: 25%;
+  margin-top: 10%;
+  background:linear-gradient(to right,#F5E5FC,#B28B84);   
+  border-radius: 2rem;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  padding-bottom: 0;
+}
+
+.msg{
+  font-size: 0.875rem; 
+  margin-top: 1rem;
+  color: #4b5563; 
+}
+
+.switch{
+  color: #450920; 
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+  transition: text-decoration 0.2s;
+}
+
+.switch:hover{
+  text-decoration: underline;
+}
+
+.form-card{
+  max-width: 400px;
+  height: 400px;
+  margin: 50px auto;
+  padding: 30px;     
+  background:linear-gradient(to right,#55a630,#ffff3f);     
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 10%;
+}
+
+.loginlabel{
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.error-text{
+  color: #ef4444;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.loginbutton{
+  width: 75%;
+  padding: 0.5rem;
+  background-color: #450920; 
+  color: #ffffff;
+  margin: 10px;
+  margin-left: 12.5%;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.loginbutton:hover{ 
+  transform: scale(1.02);
+}
+
+.signuplabel{
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.signup-button{
+  width: 75%;
+  padding: 0.5rem;
+  background-color: #450920; 
+  color: #ffffff;
+  font-weight: 600;
+  border: none;
+  border-radius: 0.5rem;
+  margin: 10px;
+  margin-left: 12.5%;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.signup-button:hover{
+  transform: scale(1.02);
+}
+
+.form2{
+  background:linear-gradient(to right,#F5E5FC,#B28B84); 
+  text-align: center;
+  width: 50%;   
+  margin-left: 25%;
+  margin-top: 0%;
+  border-bottom-right-radius: 2rem;
+  border-bottom-left-radius: 2rem;
+  padding-bottom: 2%;
+}
+
+
+
+
+       
+
+
+
+
+
+
