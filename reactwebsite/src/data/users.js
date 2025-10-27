@@ -17,28 +17,28 @@ const usersData=[
     "name":"Sania Mehta",
     "username": "sania_123",
     "avatar": pp2,
-    "bio": "Love to travel and share my adventures!"
+    "bio": "Enjoy and explore!"
   },
   {
     "id": 3,
     "name":"Shruti Tiwari",
     "username": "shruti_123",
     "avatar": pp3,
-    "bio": "Love to travel and share my adventures!"
+    "bio": "Passionate and fashion enthusiast!"
   },
   {
     "id": 4,
     "name":"Shraddha Joshi",
     "username": "shraddha_123",
     "avatar": pp4,
-    "bio": "Love to travel and share my adventures!"
+    "bio": "Love with nature!"
   },
   {
     "id": 5,
     "name":"Meera Shah",
     "username": "meera_123",
     "avatar": pp5,
-    "bio": "Love to travel and share my adventures!"
+    "bio": "Foodie and shopping lover!"
   }
 ];
 

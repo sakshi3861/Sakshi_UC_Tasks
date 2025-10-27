@@ -9,7 +9,7 @@ const postsData=[
     "id": 1,
     "userId": 1,
     "image": pp5,
-    "caption": "Just got back from my trip to Japan 🇯🇵 — amazing experience!",
+    "caption": "Just got back from my trip to Japan—amazing experience!",
     "likes": 120,
     "comments":[
       {"user": "kiaramehta", "text": "Love this!" },
@@ -20,8 +20,8 @@ const postsData=[
     "id": 2,
     "userId": 2,
     "image": pp6,
-    "caption": "Just got back from my trip to Japan 🇯🇵 — amazing experience!",
-    "likes": 120,
+    "caption": "Happy faces there!",
+    "likes": 140,
     "comments":[
       {"user": "kiaramehta", "text": "Love this!" },
       {"user": "rahulv", "text": "Wonderful" }
@@ -31,8 +31,8 @@ const postsData=[
     "id": 3,
     "userId": 3,
     "image": pp7,
-    "caption": "Just got back from my trip to Japan 🇯🇵 — amazing experience!",
-    "likes": 120,
+    "caption": "Enjoying vacations!",
+    "likes": 80,
     "comments":[
       {"user": "kiaramehta", "text": "Love this!" },
       {"user": "rahulv", "text": "Wonderful" }
@@ -42,8 +42,8 @@ const postsData=[
     "id": 4,
     "userId": 4,
     "image": pp8,
-    "caption": "Just got back from my trip to Japan 🇯🇵 — amazing experience!",
-    "likes": 120,
+    "caption": "Traditional looking classic!",
+    "likes": 70,
     "comments":[
       {"user": "kiaramehta", "text": "Love this!" },
       {"user": "rahulv", "text": "Wonderful" }
@@ -53,8 +53,8 @@ const postsData=[
     "id": 5,
     "userId": 5,
     "image": pp9,
-    "caption": "Just got back from my trip to Japan 🇯🇵 — amazing experience!",
-    "likes": 120,
+    "caption": "Airport looks!",
+    "likes": 130,
     "comments":[
       {"user": "kiaramehta", "text": "Love this!" },
       {"user": "rahulv", "text": "Wonderful" }
