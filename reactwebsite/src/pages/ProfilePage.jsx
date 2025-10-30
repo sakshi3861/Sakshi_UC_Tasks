@@ -5,7 +5,7 @@ import usersData from "../data/users";
 import postsData from "../data/posts"; 
 
 const ProfilePage = () => {
-  const { username } = useParams();
+  const {username} = useParams();
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
@@ -21,9 +21,6 @@ const ProfilePage = () => {
     }
     setUser(foundUser);
 
-    const storedBio = localStorage.getItem(`${foundUser.username}_bio`);
-    setBio(storedBio || foundUser.bio);
-
     const postsForUser = postsData
       .filter((post) => post.userId === foundUser.id)
       .sort(
@@ -34,11 +31,6 @@ const ProfilePage = () => {
 
   if (!user) return null; 
 
-  const handleSaveBio = () => {
-    localStorage.setItem(`${user.username}_bio`, bio);
-    setIsEditing(false);
-  };
-
   return (
     <div className="min-h-full bg-[linear-gradient(to_right,#91A6FF,#FF88DC)] px-4 py-8">
       <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-md p-6">
@@ -48,23 +40,6 @@ const ProfilePage = () => {
           <div className="flex-1 text-center md:text-left">
             <h2 className="text-2xl font-bold text-gray-900">{user.username}</h2>
 
-            <div className="mt-4">
-              {isEditing ? (
-                <div className="flex flex-col space-y-2">
-                  <textarea value={bio} onChange={(e) => setBio(e.target.value)} className="border rounded-lg p-2 text-sm w-full focus:ring-2 focus:ring-purple-500" autoFocus maxLength={150}/>
-                  <button onClick={handleSaveBio} className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
-                    Save
-                  </button>
-                </div>
-              ) : (
-                <>
-                  <p className="text-gray-700 mt-2">{bio}</p>
-                  <button onClick={() => setIsEditing(true)} className="text-purple-600 text-sm font-semibold mt-2 hover:underline">
-                    Edit Bio
-                  </button>
-                </>
-              )}
-            </div>
           </div>
         </div>
 

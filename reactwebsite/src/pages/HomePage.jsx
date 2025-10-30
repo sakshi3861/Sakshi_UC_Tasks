@@ -10,29 +10,24 @@ const HomePage = () => {
 
   const userMap = Object.fromEntries(usersData.map((u) => [u.id, u]));
   const commentsMap = commentsData.reduce((acc, comment) => {
-    if (!acc[comment.postId]) acc[comment.postId] = [];
+    if (!acc[comment.postId]){
+      acc[comment.postId] = [];
+    }
     acc[comment.postId].push(comment);
     return acc;
   }, {});
-
+  
   const initialPosts = postsData.map((post) => {
-    const user = userMap[post.userId];
-    const postComments = commentsMap[post.id] || [];
-    return {
-      ...post,
-      username: user?.username || "Unknown User",
-      userAvatar: user?.avatar || "https://via.placeholder.com/150",
-      caption: post.content,
-      timestamp: new Date(post.timestamp).toLocaleString([], {
-        month: "short",
-        day: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-      }),
-      likes: post.likes || 0,
-      commentsCount: postComments.length, 
-      isLiked: false,
-    };
+  const user = userMap[post.userId];
+  return {
+    ...post,
+    username: user?.username || "Unknown User",
+    userAvatar: user?.avatar || "No profile photo",
+    caption: post.caption, 
+    likes: post.likes || 0,
+    commentsCount: post.comments?.length || 0,
+    isLiked: false,
+  };
   });
 
   const [posts, setPosts] = useState(initialPosts);
@@ -40,13 +35,7 @@ const HomePage = () => {
   const handleLikeToggle = (postId) => {
     setPosts((prevPosts) =>
       prevPosts.map((post) =>
-        post.id === postId
-          ? {
-              ...post,
-              isLiked: !post.isLiked,
-              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-            }
-          : post
+        post.id === postId? { ...post, isLiked: !post.isLiked, likes: post.isLiked ? post.likes - 1 : post.likes + 1,}: post
       )
     );
   };
@@ -63,5 +52,9 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+
+
 
 

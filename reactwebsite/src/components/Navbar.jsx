@@ -13,8 +13,8 @@ const Navbar = () => {
   return (
     <nav className="bg-[linear-gradient(to_right,#C04CFD,#FC6DAB)] sticky top-0 z-50">
       <div className="max-w-6xl mx-auto px-4 flex justify-between items-center h-16">
-        <NavLink to="/home" className="text-2xl font-bold bg-clip-text text-transparent gradient-bg">
-          Vibes
+        <NavLink to="/home" className="text-5xl font-bold text-yellow-300 flex items-center justify-center leading-none">
+        Vibes
         </NavLink>
 
         <div className="hidden md:flex space-x-6">

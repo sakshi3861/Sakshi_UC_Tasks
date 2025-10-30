@@ -5,7 +5,7 @@ import commentsData from "../data/comments";
 import users from "../data/users";
 
 const PostPage = () => {
-  const { id } = useParams();
+  const {id} = useParams();
   const navigate = useNavigate();
   const selectedPost = posts.find((p) => p.id === parseInt(id));
 
@@ -21,17 +21,6 @@ const PostPage = () => {
   useEffect(() => {
     commentsRef.current?.scrollTo(0, commentsRef.current.scrollHeight);
   }, [comments]);
-
-  if (!selectedPost) {
-    return (
-      <div className="min-h-full flex items-center justify-center">
-        <p className="text-gray-500">Post not found.</p>
-        <button onClick={() => navigate(-1)} className="ml-4 text-purple-600 hover:text-purple-700">
-          Go Back
-        </button>
-      </div>
-    );
-  }
 
   const postUser = users.find((u) => u.id === selectedPost.userId);
 
@@ -62,7 +51,7 @@ const PostPage = () => {
         </button>
 
         <div className="bg-white rounded-lg shadow-lg overflow-hidden md:flex">
-          <img src={selectedPost.image} alt="Post" className="w-full md:w-2/3 h-96 object-cover"/>
+          <img src={selectedPost.image} alt="Post" className="w-full md:w-2/3 h-96 object-contain bg-fuchsia-400"/>
           <div className="md:w-1/3 p-6 flex flex-col">
             <div className="flex items-center space-x-3 mb-4">
               <img src={postUser.avatar} alt={postUser.username} className="w-12 h-12 rounded-full object-cover"/>
@@ -70,9 +59,6 @@ const PostPage = () => {
                 <h3 className="font-semibold text-gray-900">
                   {postUser.username}
                 </h3>
-                <p className="text-sm text-gray-500">
-                  {new Date(selectedPost.timestamp).toLocaleString()}
-                </p>
               </div>
             </div>
             <p className="text-gray-800 mb-4">{selectedPost.content}</p>
