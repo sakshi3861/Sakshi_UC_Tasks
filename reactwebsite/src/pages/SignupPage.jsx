@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {validateEmail,validatePassword,validateUsername} from "./validation";
+import {validateEmail,validatePassword,validateUsername} from "../components/validation";
 
 const SignupPage = ({ setisLogin }) => {
   const [email, setEmail] = useState("");
