@@ -1,68 +1,83 @@
-import React, {useState} from "react";
-import {useNavigate} from "react-router-dom";
-import {validateEmail,validatePassword} from "../components/validation";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import API from "../api/auth";
+import { UserContext } from "../context/UserContext";
+import { validateEmail, validatePassword } from "../components/validation";
 
-const LoginPage = ({ setisLogin }) => {
+const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const { setUser } = useContext(UserContext);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
+
     const newErrors = {};
+    if (!validateEmail(email)) newErrors.email = "Invalid email";
+    if (!validatePassword(password)) newErrors.password = "Password must be 8+ chars";
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
 
-    if (!validateEmail(email)) 
-      newErrors.email = "Please enter a valid email address";
-    if (!validatePassword(password)) 
-      newErrors.password = "Password must be at least 8 characters, include uppercase, lowercase, number, and symbol";
+    setLoading(true);
+    try {
+      const res = await API.post("/login", { email, password });
+      const token = res.data?.token;
+      if (!token) throw new Error("Login failed: no token returned");
 
-    setErrors(newErrors);
+      Cookies.set("token", token, { expires: 1 });
 
-    if (Object.keys(newErrors).length === 0) {
-      setisLogin(true);
+      const userData = res.data?.user;
+      if (!userData) throw new Error("Login failed: user data missing");
+
+      setUser(userData);
       navigate("/home");
+    } catch (err) {
+      console.error(err);
+      const message = err.response?.data?.message || err.message || "Login failed";
+      setErrors({ api: message });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-linear-to-br from-purple-700 via-purple-500 to-fuchsia-400">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8 fade-in">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold bg-linear-to-r from-purple-600 to-fuchsia-500 bg-clip-text text-transparent">
-            Welcome Back
-          </h2>
-          <p className="text-gray-600 mt-2">Sign in to your account</p>
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-purple-700 via-purple-500 to-fuchsia-400 px-4">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+        <h2 className="text-3xl font-bold text-center mb-4">Welcome Back</h2>
+        <p className="text-gray-600 text-center mb-6">Sign in to your account</p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.email ? "border-red-500" : "border-gray-300"}`}/>
-            {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
-          </div>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {errors.api && <p className="text-red-500 text-sm text-center">{errors.api}</p>}
 
-          <div>
-            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent ${errors.password ? "border-red-500" : "border-gray-300"}`}/>
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
-          </div>
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 ${errors.email ? "border-red-500" : "border-gray-300"}`}/>
+          {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
 
-          <button type="submit" className="w-full bg-linear-to-r from-purple-600 to-fuchsia-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
-            Sign In
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500 ${errors.password ? "border-red-500" : "border-gray-300"}`}/>
+          {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
+
+          <button type="submit" disabled={loading} className="w-full bg-linear-to-r from-purple-600 to-fuchsia-500 text-white py-2 rounded-lg font-semibold hover:opacity-90 transition-opacity">
+            {loading ? "Signing In..." : "Sign In"}
           </button>
         </form>
 
-        <div className="mt-6 text-center">
-          <span className="text-gray-600">Don't have an account? </span>
-          <button onClick={() => navigate("/register")} className="text-purple-600 hover:underline font-semibold">
+        <p className="mt-6 text-center text-gray-600">
+          Don't have an account?{" "}
+          <button type="button" onClick={() => navigate("/register")} className="text-purple-600 hover:underline font-semibold">
             Register
           </button>
-        </div>
+        </p>
       </div>
     </div>
   );
 };
 
 export default LoginPage;
-
-
 

@@ -1,100 +1,96 @@
-import React, {useState,useEffect,useRef} from "react";
-import {useParams,useNavigate} from "react-router-dom";
-import posts from "../data/posts";
-import commentsData from "../data/comments";
-import users from "../data/users";
+import React, { useState, useContext, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext";
 
 const PostPage = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
-  const selectedPost = posts.find((p) => p.id === parseInt(id));
-
-  const [newComment, setNewComment] = useState("");
-  const [comments, setComments] = useState(
-    selectedPost
-      ? commentsData.filter((c) => c.postId === selectedPost.id)
-      : []
-  );
-
+  const { user: loggedInUser } = useContext(UserContext);
   const commentsRef = useRef(null);
+
+  const [post, setPost] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [newComment, setNewComment] = useState("");
+
+  useEffect(() => {
+    if (!loggedInUser) return;
+
+    setPost({
+      _id: id,
+      content: "This is a mock post for Task 4 🚀",
+      image: `https://picsum.photos/seed/${id}/800/600`,
+      likes: 12,
+      user: {
+        name: loggedInUser.name,
+      },
+    });
+
+    setComments([
+      {
+        _id: "1",
+        user: loggedInUser.name,
+        text: "Looks great!",
+        createdAt: new Date().toISOString(),
+      },
+    ]);
+  }, [id, loggedInUser]);
 
   useEffect(() => {
     commentsRef.current?.scrollTo(0, commentsRef.current.scrollHeight);
   }, [comments]);
 
-  const postUser = users.find((u) => u.id === selectedPost.userId);
-
   const handleCommentSubmit = (e) => {
     e.preventDefault();
     if (!newComment.trim()) return;
 
-    const newC = {
-      id: Date.now(),
-      postId: selectedPost.id,
-      userId: 0, 
-      username: "You",
-      comment: newComment,
-      timestamp: new Date().toISOString(),
-    };
+    setComments((prev) => [
+      ...prev,
+      {
+        _id: Date.now().toString(),
+        user: loggedInUser.name,
+        text: newComment,
+        createdAt: new Date().toISOString(),
+      },
+    ]);
 
-    setComments([...comments, newC]);
     setNewComment("");
   };
 
+  if (!post) return <p className="text-center mt-8">Loading post...</p>;
+
   return (
-    <div className="max-h-screen bg-[linear-gradient(to_right,#91A6FF,#FF88DC)]">
-    <div className="min-h-full bg-[linear-gradient(to_right,#91A6FF,#FF88DC)]">
-      <div className="max-w-4xl mx-auto px-4 py-8">
-        <button onClick={() => navigate(-1)} className="mb-6 flex items-center space-x-2 text-purple-600 hover:text-purple-700">
-          <span>←</span>
-          <span>Back to Feed</span>
+    <div className="min-h-screen bg-[linear-gradient(to_right,#91A6FF,#FF88DC)] px-4 py-8">
+      <div className="max-w-4xl mx-auto">
+        <button onClick={() => navigate(-1)} className="mb-4 text-purple-700 font-semibold">
+          ← Back
         </button>
 
         <div className="bg-white rounded-lg shadow-lg overflow-hidden md:flex">
-          <img src={selectedPost.image} alt="Post" className="w-full md:w-2/3 h-96 object-contain bg-fuchsia-400"/>
-          <div className="md:w-1/3 p-6 flex flex-col">
-            <div className="flex items-center space-x-3 mb-4">
-              <img src={postUser.avatar} alt={postUser.username} className="w-12 h-12 rounded-full object-cover"/>
-              <div>
-                <h3 className="font-semibold text-gray-900">
-                  {postUser.username}
-                </h3>
-              </div>
-            </div>
-            <p className="text-gray-800 mb-4">{selectedPost.content}</p>
+          <img src={post.image} alt="Post" className="w-full md:w-2/3 object-cover"/>
 
-            <div className="flex items-center space-x-4 mb-4 border-b pb-3">
-              <span>❤️ {selectedPost.likes}</span>
-              <span>💬 {comments.length}</span>
+          <div className="md:w-1/3 p-4 flex flex-col">
+            <h3 className="font-bold mb-2">{post.user.name}</h3>
+            <p className="mb-4 text-gray-700">{post.content}</p>
+
+            <div className="mb-3">
+              ❤️ {post.likes} · 💬 {comments.length}
             </div>
 
-            <div ref={commentsRef} className="flex-1 overflow-y-auto space-y-3 mb-4 max-h-64">
-              {comments.map((c) => {
-                const commentUser =
-                  c.userId === 0
-                    ? { username: "You", avatar: "https://i.pravatar.cc/150?img=0" }
-                    : users.find((u) => u.id === c.userId);
-
-                return (
-                  <div key={c.id} className="flex space-x-2">
-                    <img src={commentUser.avatar} alt={commentUser.username} className="w-8 h-8 rounded-full object-cover"/>
-                    <div>
-                      <p className="text-sm font-semibold">
-                        {commentUser.username}
-                      </p>
-                      <p className="text-sm text-gray-700">{c.comment}</p>
-                      <p className="text-xs text-gray-400">
-                        {new Date(c.timestamp).toLocaleString()}
-                      </p>
-                    </div>
-                  </div>
-                );
-              })}
+            <div ref={commentsRef} className="flex-1 overflow-y-auto space-y-2 mb-4">
+              {comments.map((c) => (
+                <div key={c._id}>
+                  <p className="text-sm font-semibold">{c.user}</p>
+                  <p className="text-sm">{c.text}</p>
+                  <p className="text-xs text-gray-400">
+                    {new Date(c.createdAt).toLocaleString()}
+                  </p>
+                </div>
+              ))}
             </div>
 
-            <form onSubmit={handleCommentSubmit} className="flex space-x-2">
-              <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Add a comment..." className="flex-1 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-purple-500"/>
-              <button type="submit" disabled={!newComment.trim()} className="gradient-bg text-white px-4 py-2 rounded-lg hover:opacity-90 disabled:opacity-50">
+            <form onSubmit={handleCommentSubmit} className="flex gap-2">
+              <input value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Add a comment..." className="flex-1 border rounded px-2 py-1"/>
+              <button type="submit" className="bg-purple-600 text-white px-3 rounded">
                 Post
               </button>
             </form>
@@ -102,9 +98,10 @@ const PostPage = () => {
         </div>
       </div>
     </div>
-  </div>
   );
 };
 
 export default PostPage;
+
+
 
