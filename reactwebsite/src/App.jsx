@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom
 import Navbar from "./components/Navbar";
 import LandingPage from "./pages/LandingPage";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
+import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import PostPage from "./pages/PostPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -19,7 +19,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage setisLogin={setisLogin} />} />
-        <Route path="/signup" element={<SignupPage setisLogin={setisLogin} />} />
+        <Route path="/register" element={<RegisterPage setisLogin={setisLogin} />} />
         <Route path="/home" element={isLogin ? <HomePage /> : <Navigate to="/login" />} />
         <Route path="/post/:id" element={isLogin ? <PostPage /> : <Navigate to="/login" />} />
         <Route path="/profile/:username" element={isLogin ? <ProfilePage /> : <Navigate to="/login" />} />

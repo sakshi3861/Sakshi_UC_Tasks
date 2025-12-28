@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {validateEmail,validatePassword,validateUsername} from "../components/validation";
 
-const SignupPage = ({ setisLogin }) => {
+const RegisterPage = ({ setisLogin }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -67,6 +67,6 @@ const SignupPage = ({ setisLogin }) => {
   );
 };
 
-export default SignupPage;
+export default RegisterPage;
 
 
