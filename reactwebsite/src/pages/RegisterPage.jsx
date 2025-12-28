@@ -52,7 +52,7 @@ const RegisterPage = ({ setisLogin }) => {
           </div>
 
           <button type="submit" className="w-full bg-linear-to-r from-purple-600 to-fuchsia-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition-opacity">
-            Sign Up
+            Register
           </button>
         </form>
 
