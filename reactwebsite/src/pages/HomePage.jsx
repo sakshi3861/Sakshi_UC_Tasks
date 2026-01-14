@@ -19,27 +19,40 @@ const HomePage = () => {
     const fetchPosts = async () => {
       setLoading(true);
       try {
-        const users = await getAllUsers(); 
+        const users = await getAllUsers();
         const usersToShow = users.filter(u => u.id !== loggedInUser.id);
 
-        const res = await fetch(`https://picsum.photos/v2/list?page=2&limit=${usersToShow.length}`);
-        const picsumData = await res.json();
+        const picsumRes = await fetch(
+          `https://picsum.photos/v2/list?page=2&limit=${usersToShow.length}`
+        );
+        const picsumData = await picsumRes.json();
 
-        const avatarRes = await fetch(`https://randomuser.me/api/?results=${usersToShow.length}&inc=picture`);
+        const avatarRes = await fetch(
+          `https://randomuser.me/api/?results=${usersToShow.length}&inc=picture`
+        );
         const avatarData = await avatarRes.json();
 
-        const userPosts = usersToShow.map((user, index) => ({
-          id: user.id,
-          userId: user.id,
-          username: user.name,
-          userAvatar: avatarData.results[index]?.picture?.medium || `https://i.pravatar.cc/150?u=${user.id}`,
-          image: picsumData[index]?.download_url || null, 
-          caption: user.bio || `Hello, I am ${user.name}`,
-          likes: Math.floor(Math.random() * 50),
-          commentsCount: Math.floor(Math.random() * 10),
-          isLiked: false,
-          isOwnPost: user.id === loggedInUser.id,
-        }));
+        const storedLikes = JSON.parse(localStorage.getItem("postsLikes") || "{}");
+
+        const userPosts = usersToShow.map((user, index) => {
+          const postId = `${user.id}-${index}`; 
+          const stored = storedLikes[postId] || { isLiked: false, likes: 0 };
+
+          return {
+            id: postId,
+            userId: user.id,
+            username: user.name,
+            userAvatar:
+              avatarData.results[index]?.picture?.medium ||
+              `https://i.pravatar.cc/150?u=${user.id}`,
+            image: picsumData[index]?.download_url || null,
+            caption: user.bio || `Hello, I am ${user.name}`,
+            likes: stored.likes || Math.floor(Math.random() * 50),
+            commentsCount: Math.floor(Math.random() * 10),
+            isLiked: stored.isLiked || false,
+            isOwnPost: user.id === loggedInUser.id,
+          };
+        });
 
         setPosts(userPosts);
       } catch (err) {
@@ -53,17 +66,20 @@ const HomePage = () => {
     fetchPosts();
   }, [loggedInUser, navigate]);
 
-  const handleLikeToggle = (postId) => {
+  const handleLikeToggle = postId => {
     setPosts(prevPosts =>
-      prevPosts.map(post =>
-        post.id === postId
-          ? {
-              ...post,
-              isLiked: !post.isLiked,
-              likes: post.isLiked ? post.likes - 1 : post.likes + 1,
-            }
-          : post
-      )
+      prevPosts.map(post => {
+        if (post.id !== postId) return post;
+
+        const newIsLiked = !post.isLiked;
+        const newLikes = newIsLiked ? post.likes + 1 : post.likes - 1;
+
+        const storedLikes = JSON.parse(localStorage.getItem("postsLikes") || "{}");
+        storedLikes[postId] = { isLiked: newIsLiked, likes: newLikes };
+        localStorage.setItem("postsLikes", JSON.stringify(storedLikes));
+
+        return { ...post, isLiked: newIsLiked, likes: newLikes };
+      })
     );
   };
 
@@ -90,3 +106,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
+

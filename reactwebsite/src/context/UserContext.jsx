@@ -18,7 +18,7 @@ export const UserProvider = ({ children }) => {
 
       try {
         const res = await axios.get(
-          "https://task4-authdb.onrender.com/api/auth/me",
+          "https://task4-authdb.onrender.com/auth/me",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
